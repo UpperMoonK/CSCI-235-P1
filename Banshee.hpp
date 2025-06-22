@@ -18,7 +18,7 @@ public:
     int getScreamVolume() const;
     void setFearInducing(const bool& fearInducing);
     bool isFearInducing() const;
-    void display() const;
+    void display() const override;
     friend bool operator==(const Banshee& banshee1, const Banshee& banshee2);
 
 private:

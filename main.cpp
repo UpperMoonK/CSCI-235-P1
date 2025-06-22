@@ -1,236 +1,166 @@
-
+#include "Tavern.hpp"
 #include "Creature.hpp"
+#include "CatThug.hpp"
 #include "Banshee.hpp"
 #include "Firecat.hpp"
-#include "CatThug.hpp"
-#include "MagicalBag.hpp"
+#include <iostream>
+#include <cassert>
+#include <iomanip>
+
+
+void runTavernTests() {
+    Tavern tavern;
+    assert(tavern.getLevelSum() == 0);
+    assert(tavern.getCreatureCount() == 0);
+    assert(tavern.getHostileCount() == 0);
+
+    Creature* c1 = new Creature("Goblin", MAGICAL, FIRE, 5, 5, true);
+    Creature* c2 = new Creature("Skeleton", UNDEAD, DEATH, 8, 3, true);
+    Creature* c3 = new Creature("Wolf", ANIMAL, LIFE, 4, 8, false);
+    Creature* c4 = new Creature("Wizard", HUMANOID, STORM, 6, 3, false);
+    Creature* c5 = new Creature("Spirit", UNKNOWN, NONE, 10, 7, true);
+
+    // Test enterTavern
+    assert(tavern.enterTavern(c1) == true);
+    std::cout << "Entered: " << c1->getLevel() << " -> Success: " << tavern.enterTavern(c1) << std::endl;
+    assert(tavern.enterTavern(c2) == true);
+    std::cout << "Entered: " << c2->getLevel() << " -> Success: " << tavern.enterTavern(c2) << std::endl;
+    assert(tavern.enterTavern(c3) == true);
+    std::cout << "Entered: " << c3->getLevel() << " -> Success: " << tavern.enterTavern(c3) << std::endl;
+    assert(tavern.enterTavern(c4) == true);
+    std::cout << "Entered: " << c4->getLevel() << " -> Success: " << tavern.enterTavern(c4) << std::endl;
+    assert(tavern.enterTavern(c5) == true);
+    std::cout << "Entered: " << c5->getLevel() << " -> Success: " << tavern.enterTavern(c5) << std::endl;
+    assert(tavern.enterTavern(c1) == false); // duplicate
+
+    // Test counts
+    std::cout << "Level Sum: " << tavern.getLevelSum() << std::endl;
+    assert(tavern.getLevelSum() == 26);
+    assert(tavern.getCreatureCount() == 5);
+    assert(tavern.getHostileCount() == 3);
+
+    // Test tallyCategory
+    assert(tavern.tallyCategory("MAGICAL") == 1);
+    assert(tavern.tallyCategory("UNDEAD") == 1);
+    assert(tavern.tallyCategory("ANIMAL") == 1);
+    assert(tavern.tallyCategory("HUMANOID") == 1);
+    assert(tavern.tallyCategory("UNKNOWN") == 1);
+    assert(tavern.tallyCategory("INVALID") == 0);
+
+    // Test tallySchool
+    assert(tavern.tallySchool("FIRE") == 1);
+    assert(tavern.tallySchool("DEATH") == 1);
+    assert(tavern.tallySchool("LIFE") == 1);
+    assert(tavern.tallySchool("STORM") == 1);
+    assert(tavern.tallySchool("NONE") == 1);
+    assert(tavern.tallySchool("MYTH") == 0);
+
+    // Test hostile percentage
+    double expected = (3.0 / 5.0) * 100.0;
+    double result = tavern.calculateHostilePercentage();
+    assert(std::abs(result - expected) < 0.01);
+
+    // Test release below level
+    int removed = tavern.releaseCreaturesBelowLevel(5);
+    assert(removed == 2); // Skeleton(3), Wolf(4)
+    assert(tavern.getCreatureCount() == 3);
+    assert(tavern.getLevelSum() == 20);
+
+    // Test release of category
+    removed = tavern.releaseCreaturesOfCategory("MAGICAL");
+    assert(removed == 1); // Goblin
+    assert(tavern.getCreatureCount() == 2);
+
+    // Test invalid category = remove all
+    removed = tavern.releaseCreaturesOfCategory("INVALID");
+    assert(removed == 2);
+    assert(tavern.getCreatureCount() == 0);
+
+    // Refill tavern for school removal test
+    tavern.enterTavern(c1);
+    tavern.enterTavern(c2);
+    tavern.enterTavern(c3);
+    tavern.enterTavern(c4);
+    tavern.enterTavern(c5);
+
+    removed = tavern.releaseCreaturesOfSchool("FIRE");
+    assert(removed == 1);
+    removed = tavern.releaseCreaturesOfSchool("INVALID");
+    assert(removed == 4); // all remaining
+
+    // Test exitTavern
+    tavern.enterTavern(c1);
+    bool exited = tavern.exitTavern(c1);
+    assert(exited == true);
+    exited = tavern.exitTavern(c1);
+    assert(exited == false); // already gone
+
+    // Test report and display manually
+    std::cout << "\n=== Tavern Report ===\n";
+    tavern.enterTavern(c1);
+    tavern.enterTavern(c2);
+    tavern.tavernReport();
+
+    std::cout << "\n=== Creature Display ===\n";
+    tavern.displayCreatures();
+
+    // Clean up
+    delete c1;
+    delete c2;
+    delete c3;
+    delete c4;
+    delete c5;
+
+    std::cout << "\nAll Tavern tests passed!\n";
+}
+
+void runTavernTests2() {
+    Tavern tavern;
+
+    // Create derived creatures with explicit values
+    Creature* firecat = new Firecat("Blaze", MAGICAL, FIRE, 7, 3, true, Firecat::ORANGE, 25, true);      // category, school, level, age, hostile
+    Creature* thug = new CatThug("Whiskers", HUMANOID, STORM, 5, 2, false, {}, CatThug::MOB_BOSS, false);
+    Creature* banshee = new Banshee("Wail", UNDEAD, DEATH, 6, 10, true, Banshee::BLUE, 10, true);
+
+    // Add to tavern
+    assert(tavern.enterTavern(firecat));
+    assert(tavern.enterTavern(thug));
+    assert(tavern.enterTavern(banshee));
+
+    // Level sum
+    assert(tavern.getLevelSum() == 15);
+
+    // Creature count
+    assert(tavern.getCreatureCount() == 3);
+
+    // Hostile count
+    assert(tavern.getHostileCount() == 2);  // Firecat and Banshee are hostile
+
+    // Category tally
+    assert(tavern.tallyCategory("MAGICAL") == 1);
+    assert(tavern.tallyCategory("HUMANOID") == 1);
+    assert(tavern.tallyCategory("UNDEAD") == 1);
+
+    // School tally
+    assert(tavern.tallySchool("FIRE") == 1);
+    assert(tavern.tallySchool("STORM") == 1);
+    assert(tavern.tallySchool("DEATH") == 1);
+
+    // Hostile %
+    std::cout << "Hostile %: " << tavern.calculateHostilePercentage() << std::endl;
+    assert(std::abs(tavern.calculateHostilePercentage() - 66.67) < 0.01);
+
+    // Display test
+    std::cout << "\nDisplaying creatures:\n";
+    tavern.displayCreatures();
+
+    // Clean up
+    delete firecat;
+    delete thug;
+    delete banshee;
+}
 
 int main() {
-    //Testing Default Banshee
-    Banshee defaultBanshee;
-    defaultBanshee.display();
-    std::cout << std::endl;
-
-    //Testing Parameterized Banshees
-    Banshee parameterizedBanshee("Meheraan", Category::UNDEAD, School::DEATH, 10, 2, true, Banshee::Aura::GREEN, 50, false);
-    parameterizedBanshee.display();
-    std::cout << std::endl;
-
-    Banshee parameterizedDefaultBansheee("Roy");
-    parameterizedDefaultBansheee.display();
-    std::cout << std::endl;
-
-    //Testing setters and getters
-    std::cout << "Parameterized Banshee's Aura: " << parameterizedBanshee.getAura() << std::endl;
-    parameterizedBanshee.setAura(Banshee::Aura::BLUE);
-    std::cout << "New Aura: " << parameterizedBanshee.getAura() << std::endl << std::endl;
-
-    if (parameterizedBanshee.setScreamVolume(0) == true) {
-        std::cout << "Your banshee scream volume is set incorrectly" << std::endl;
-    } else {
-        std::cout << "Your banshee scream volume is set correctly" << std::endl;
-    }
-
-    std::cout << "Parameterized Banshee's Scream Volume: " << parameterizedBanshee.getScreamVolume() << std::endl << std::endl;
-
-    std::cout << "Parameterized Banshee's Fear Inducing Qualities: " << parameterizedBanshee.isFearInducing() << std::endl;
-    parameterizedBanshee.setFearInducing(true);
-    std::cout << "New Fear Inducing Quality: " << parameterizedBanshee.isFearInducing() << std::endl << std::endl;
-
-    //Testing Default Firecat
-    Firecat defaultFirecat;
-    defaultFirecat.display();
-    std::cout << std::endl;
-
-    //Testing Parameterized Firecats
-    Firecat parameterizedFirecat("Laddoo", Category::ANIMAL, School::FIRE, 100, 50, false, Firecat::FlameColor::ORANGE, 100000, true);
-    parameterizedFirecat.display();
-    std::cout << std::endl;
-
-    Firecat parameterizedDefaultFirecat("Michelle");
-    parameterizedDefaultFirecat.display();
-    std::cout << std::endl;
-
-    //Testing setters and getters
-    std::cout << "Parameterized Firecat's Flame Color: " << parameterizedFirecat.getFlameColor() << std::endl;
-    parameterizedFirecat.setFlameColor(Firecat::FlameColor::BLUE);
-    std::cout << "New Flame Color: " << parameterizedFirecat.getFlameColor() << std::endl << std::endl;
-
-    if (parameterizedDefaultFirecat.setFlameIntensity(0) == true) {
-        std::cout << "Your firecat flame intensity is set incorrectly" << std::endl;
-    } else {
-        std::cout << "Your firecat flame intensity is set correctly" << std::endl;
-    }
-
-    std::cout << "Parameterized Firecat's Flame Intensity: " << parameterizedFirecat.getFlameIntensity() << std::endl << std::endl;
-
-    std::cout << "Parameterized Firecat's Arsonist Qualities: " << parameterizedFirecat.isArsonist() << std::endl;
-    parameterizedBanshee.setFearInducing(false);
-    std::cout << "New Arsonist Qualities: " << parameterizedFirecat.isArsonist() << std::endl << std::endl;
-
-    //Testing Default CatThug
-    CatThug defaultCatThug;
-    defaultCatThug.display();
-    std::cout << std::endl;
-
-    //Testing Parameterized CatThugs
-    CatThug::Weapon weapon1{"Syntax Whisk", 100, true};
-    CatThug::Weapon weapon2{"The Inkblade", 500, false};
-    CatThug::Weapon weapon3{"Bitcrust Shield", 10, false};
-    CatThug parameterizedCatThug("Ank", Category::HUMANOID, School::LIFE, 1000000, 100, false, {weapon1, weapon2, weapon3}, CatThug::Notoriety::ENFORCER, false);
-    parameterizedCatThug.display();
-    std::cout << std::endl;
-
-    CatThug parameterizedDefaultCatThug("Hanz");
-    parameterizedDefaultCatThug.display();
-    std::cout << std::endl;
-
-    //Testing setters and getters
-    std::cout << "Parameterized CatThug's Notoriety: " << parameterizedCatThug.getNotoriety() << std::endl;
-    parameterizedCatThug.setNotoriety(CatThug::Notoriety::MOB_BOSS);
-    std::cout << "New Notoriety: " << parameterizedCatThug.getNotoriety() << std::endl << std::endl;
-
-    std::cout << "Parameterized CatThug's Wanted Status: " << parameterizedCatThug.isWanted() << std::endl;
-    parameterizedCatThug.setIsWanted(true);
-    std::cout << "New  Wanted Status: " << parameterizedCatThug.isWanted() << std::endl << std::endl;
-
-    CatThug::Weapon newWeapon{"Spellstorm Launcher", 1000, true};
-    if (parameterizedCatThug.addWeapon(newWeapon) == true) {
-        std::cout << "New weapon added correctly" << std::endl << std::endl;
-    } else {
-        std::cout << "Weapon added incorrectly" << std::endl << std::endl;
-    }
-
-    std::vector<CatThug::Weapon> weaponVector = parameterizedCatThug.getWeapons();
-    for (int i = 0; i < weaponVector.size(); i++) {
-        std::cout << weaponVector[i].alias_ << std::endl;
-    }
-    std::cout << std::endl;
-
-    if (parameterizedCatThug.removeWeapon(weapon3) == true) {
-        std::cout << "Bitcrust Shield removed correctly" << std::endl << std::endl;
-    } else {
-        std::cout << "Bitcrust Shield not removed" << std::endl << std::endl;
-    }
-
-    std::vector<CatThug::Weapon> weaponVectorRemoval = parameterizedCatThug.getWeapons();
-    for (int i = 0; i < weaponVectorRemoval.size(); i++) {
-        std::cout << weaponVectorRemoval[i].alias_ << std::endl;
-    }
-    std::cout << std::endl;
-
-    //Testing Banshee Bag
-    MagicalBag<Banshee> bansheeBag;
-    std::cout << "Current size of bag: " << bansheeBag.getCurrentSize() << std::endl << std::endl;
-
-    Banshee mannyBanshee("Manny");
-    Banshee brendanBanshee("Brendan");
-
-    if (bansheeBag.add(mannyBanshee) == true) {
-        std::cout << "Successfully added Manny to the bag" << std::endl << std::endl;
-    } else {
-        std::cout << "Check add or operator== logic" << std::endl << std::endl;
-    }
-    if (bansheeBag.add(brendanBanshee) == true) {
-        std::cout << "Successfully added Brendan to the bag" << std::endl << std::endl;
-    } else {
-        std::cout << "Check add or operator== logic" << std::endl << std::endl;
-    }
-
-    std::cout << "Current size of bag: " << bansheeBag.getCurrentSize() << std::endl << std::endl;
-
-    Banshee removeMannyBanshee("Manny");
-    if (bansheeBag.remove(removeMannyBanshee) == true) {
-        std::cout << "Successfully removed Manny from bag" << std::endl << std::endl;
-    } else {
-        std::cout << "Check remove or operator== logic" << std::endl << std::endl;
-    }
-
-    std::cout << "Current size of bag: " << bansheeBag.getCurrentSize() << std::endl << std::endl;
-
-    if (bansheeBag.contains(brendanBanshee) == true) {
-        std::cout << "Successfully contains Brendan" << std::endl << std::endl;
-    } else {
-        std::cout << "Check contains logic" << std::endl << std::endl;
-    }
-
-    bansheeBag.clear();
-    std::cout << "Current size of bag after clear: " << bansheeBag.getCurrentSize() << std::endl << std::endl;
-
-    //Testing Firecat bag
-    MagicalBag<Firecat> firecatBag;
-    std::cout << "Current size of bag: " << firecatBag.getCurrentSize() << std::endl << std::endl;
-
-    Firecat arsenFirecat("Arsen");
-    Firecat ritaFirecat("Rita");
-
-    if (firecatBag.add(arsenFirecat) == true) {
-        std::cout << "Successfully added Arsen to the bag" << std::endl << std::endl;
-    } else {
-        std::cout << "Check add or operator== logic" << std::endl << std::endl;
-    }
-    if (firecatBag.add(ritaFirecat) == true) {
-        std::cout << "Successfully added Rita to the bag" << std::endl << std::endl;
-    } else {
-        std::cout << "Check add or operator== logic" << std::endl << std::endl;
-    }
-
-    std::cout << "Current size of bag: " << firecatBag.getCurrentSize() << std::endl << std::endl;
-
-    Firecat removeArsenFirecat("Arsen");
-    if (firecatBag.remove(removeArsenFirecat) == true) {
-        std::cout << "Successfully removed Arsen from bag" << std::endl << std::endl;
-    } else {
-        std::cout << "Check remove or operator== logic" << std::endl << std::endl;
-    }
-
-    std::cout << "Current size of bag: " << firecatBag.getCurrentSize() << std::endl << std::endl;
-
-    if (firecatBag.contains(ritaFirecat) == true) {
-        std::cout << "Successfully contains Rita" << std::endl << std::endl;
-    } else {
-        std::cout << "Check contains logic" << std::endl << std::endl;
-    }
-
-    firecatBag.clear();
-    std::cout << "Current size of bag after clear: " << firecatBag.getCurrentSize() << std::endl << std::endl;
-
-    //Testing CatThug bag
-    MagicalBag<CatThug> catThugBag;
-    std::cout << "Current size of bag: " << catThugBag.getCurrentSize() << std::endl << std::endl;
-
-    CatThug maylynCatThug("Maylyn");
-    CatThug JewelCatThug("Jewel");
-
-    if (catThugBag.add(maylynCatThug) == true) {
-        std::cout << "Successfully added Maylyn to the bag" << std::endl << std::endl;
-    } else {
-        std::cout << "Check add or operator== logic" << std::endl << std::endl;
-    }
-    if (catThugBag.add(JewelCatThug) == true) {
-        std::cout << "Successfully added Jewel to the bag" << std::endl << std::endl;
-    } else {
-        std::cout << "Check add or operator== logic" << std::endl << std::endl;
-    }
-
-    std::cout << "Current size of bag: " << catThugBag.getCurrentSize() << std::endl << std::endl;
-
-    CatThug removeMaylynCatThug("Maylyn");
-    if (catThugBag.remove(removeMaylynCatThug) == true) {
-        std::cout << "Successfully removed Maylyn from bag" << std::endl << std::endl;
-    } else {
-        std::cout << "Check remove or operator== logic" << std::endl << std::endl;
-    }
-
-    std::cout << "Current size of bag: " << catThugBag.getCurrentSize() << std::endl << std::endl;
-
-    if (catThugBag.contains(JewelCatThug) == true) {
-        std::cout << "Successfully contains Jewel" << std::endl << std::endl;
-    } else {
-        std::cout << "Check contains logic" << std::endl << std::endl;
-    }
-
-    catThugBag.clear();
-    std::cout << "Current size of bag after clear: " << catThugBag.getCurrentSize() << std::endl << std::endl;
+    runTavernTests2();
     return 0;
 }

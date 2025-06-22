@@ -131,7 +131,7 @@ std::string Creature::getSchool() const{
         case LIFE : status_ = "LIFE"; break;
         case MYTH : status_ = "MYTH"; break;
         case DEATH : status_ = "DEATH"; break;
-        default : status_ = "UNKNOWN"; break;
+        default : status_ = "NONE"; break;
     }
     return status_;
 }

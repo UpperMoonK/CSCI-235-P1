@@ -29,7 +29,7 @@ class Creature {
     int getLevel() const;
     void setHostility(const bool& isHostile);
     bool isHostile() const;
-    void display() const;
+    virtual void display() const;
 
     private:
     std::string name_; //The name of the creature(string)

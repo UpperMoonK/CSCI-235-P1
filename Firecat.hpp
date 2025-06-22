@@ -17,7 +17,7 @@ public:
     int getFlameIntensity() const;
     void setArsonist(const bool& arsonist);
     bool isArsonist() const;
-    void display() const;
+    void display() const override;
     friend bool operator==(const Firecat& firecat1, const Firecat& firecat2);
 
 private:

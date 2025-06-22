@@ -27,7 +27,7 @@ public:
     std::string getNotoriety() const;
     void setIsWanted(const bool& isWanted);
     bool isWanted() const;
-    void display() const;
+    void display() const override;
     friend bool operator==(const CatThug& catThug1, const CatThug& catThug2);
 
 private:
