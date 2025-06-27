@@ -18,6 +18,7 @@ CatThug::CatThug(){
     setSchool(MYTH);
     setHealth(1);
     setLevel(1);
+    setSpeed(1);
     this->weapons_ = {};
     this->noterietyLevel_ = ROOKIE;
     this->isWanted_ = 0;
@@ -44,12 +45,13 @@ value ROOKIE
 @param: A flag indicating whether the Cat Thug is wanted, with default
 value False
 */
-CatThug::CatThug(const std::string& name, const Category& category, const School& school, const int& health, const int& level, const bool& isHostile, const std::vector<Weapon>& weapons, const Notoriety& noterietyLevel, const bool& isWanted) : Creature(name, category, school, health, level, isHostile){
+CatThug::CatThug(const std::string& name, const Category& category, const School& school, const int& health, const int& level, const int& speed, const bool& isHostile, const std::vector<Weapon>& weapons, const Notoriety& noterietyLevel, const bool& isWanted) : Creature(name, category, school, health, level, speed, isHostile){
     setName(name);
     setCategory(category);
     setSchool(school);
     setHealth(health);
     setLevel(level);
+    setSpeed(speed);
     setHostility(isHostile);
     this->weapons_ = weapons;
     this->noterietyLevel_ = noterietyLevel;
@@ -181,7 +183,7 @@ void CatThug::display() const{
     for(int i = 0; i < weapons_.size(); i++){
         std::cout << weapons_[i].alias_ << ": " << weapons_[i].damage_ << ", " << (weapons_[i].isRanged_ ? "RANGED":"NOT RANGED") << "\n";
     }
-    std::cout<< "Noteriety: " << getNotoriety() << "\n" << "Health: " << getHealth() << "\n" << "Level: " << getLevel() << "\n" << "Is Wanted: " << real_thug << "\n" << "Hostile: " << torf << "\n";
+    std::cout<< "Noteriety: " << getNotoriety() << "\n" << "Health: " << getHealth() << "\n" << "Level: " << getLevel() << "\n" << "Speed: " << getSpeed() << "\n" << "Is Wanted: " << real_thug << "\n" << "Hostile: " << torf << "\n";
 }
 
 /**

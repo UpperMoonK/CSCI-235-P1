@@ -41,7 +41,7 @@ provided, or if the value provided is 0 or negative
 @param: The hostility of the creature (a boolean) with default value of False
 */
 
-Creature::Creature(const std::string& name, const Category& category, const School& school, const int& health, const int& level, const bool& tame){
+Creature::Creature(const std::string& name, const Category& category, const School& school, const int& health, const int& level, const int& speed, const bool& tame){
     this->name_ = name;
     this->category_ = category;
     this->school_ = school;
@@ -50,6 +50,9 @@ Creature::Creature(const std::string& name, const Category& category, const Scho
     }
     if (level > 0) {
         this->level_ = level;
+    }
+    if (speed > 0){
+        this->speed_ = speed;
     }
     this->isHostile_ = tame;
 }
@@ -179,9 +182,30 @@ bool Creature::setLevel(const int& level){
 /**
 @return: The level of the Creature
 */
-
 int Creature::getLevel() const{
     return level_;
+}
+
+/**
+@param: An integer that represents the creature’s speed
+@pre: Parameter must be greater than 0, if not, do nothing
+@post: Sets the speed private member to the value of the parameter
+@return: true if the speed was set, false otherwise
+*/
+bool Creature::setSpeed(const int& speed){
+    if(speed <= 0){
+        return 0;
+    }else{
+        this->speed_ = speed;
+        return 1;
+    }
+}
+
+/** 
+@return: The speed of the creature
+*/
+int Creature::getSpeed() const{
+    return speed_;
 }
 
 /**
@@ -220,5 +244,5 @@ void Creature::display() const{
     } else {
         torf = "FALSE";
     }
-    std::cout << getName() << "\n" << "Category: " << getCategory() << "\n" << "School: " << getSchool() << "\n" << "Health: " << getHealth() << "\n" << "Level: " << getLevel() << "\n" << "Hostile: " << torf << "\n";
+    std::cout << getName() << "\n" << "Category: " << getCategory() << "\n" << "School: " << getSchool() << "\n" << "Health: " << getHealth() << "\n" << "Level: " << getLevel() << "\n" << "Speed: " << getSpeed() << "\n" << "Hostile: " << torf << "\n";
 }

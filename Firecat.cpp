@@ -18,6 +18,7 @@ Firecat::Firecat() {
     setSchool(FIRE);
     setHealth(1);
     setLevel(1);
+    setSpeed(1);
     this->flameColor_ = ORANGE;
     this->flameIntensity_ = 1;
     this->arsonist_ = 0;
@@ -44,12 +45,13 @@ if not provided, or if the value provided is 0 or negative
 @param: A flag indicating whether the Firecat is an arsonist, with default
 value False
 */
-Firecat::Firecat(const std::string& name, const Category& category, const School& school, const int& health, const int& level, const bool& isHostile, const FlameColor& flameColor, const int& flameIntensity, const bool& arsonist) : Creature(name, category, school, health, level, isHostile) {
+Firecat::Firecat(const std::string& name, const Category& category, const School& school, const int& health, const int& level, const int& speed, const bool& isHostile, const FlameColor& flameColor, const int& flameIntensity, const bool& arsonist) : Creature(name, category, school, health, level, speed, isHostile) {
     setName(name);
     setCategory(category);
     setSchool(school);
     setHealth(health);
     setLevel(level);
+    setSpeed(speed);
     setHostility(isHostile);
     setFlameColor(flameColor);
     setFlameIntensity(flameIntensity);
@@ -144,7 +146,7 @@ void Firecat::display() const{
     } else {
         arson_ = "FALSE";
     }
-    std::cout << getName() << "\n" << "Category: " << getCategory() << "\n" << "School: " << getSchool() << "\n" << "Flame Color: " << getFlameColor() << "\n" << "Flame Intensity: " << getFlameIntensity() << "\n" << "Health: " << getHealth() << "\n" << "Level: " << getLevel() << "\n" << "Arsonist: " << arson_ << "\n" << "Hostile: " << torf << "\n";
+    std::cout << getName() << "\n" << "Category: " << getCategory() << "\n" << "School: " << getSchool() << "\n" << "Flame Color: " << getFlameColor() << "\n" << "Flame Intensity: " << getFlameIntensity() << "\n" << "Health: " << getHealth() << "\n" << "Level: " << getLevel() << "\n" << "Speed: " << getSpeed() << "\n" << "Arsonist: " << arson_ << "\n" << "Hostile: " << torf << "\n";
 }
 
 /**

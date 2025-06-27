@@ -11,7 +11,7 @@ class Banshee: public Creature {
 public:
     enum Aura{RED, BLUE, GRAY, GREEN}; 
     Banshee();
-    Banshee(const std::string& name, const Category& category = UNDEAD, const School& school = DEATH, const int& health = 1, const int& level = 1, const bool& isHostile = 0, const Aura& spectralAura = RED, const int& screamVolume = 1, const bool& fearInducing = 0);
+    Banshee(const std::string& name, const Category& category = UNDEAD, const School& school = DEATH, const int& health = 1, const int& level = 1, const int& speed = 1, const bool& isHostile = 0, const Aura& spectralAura = RED, const int& screamVolume = 1, const bool& fearInducing = 0);
     void setAura(const Aura& spectralAura);
     std::string getAura() const;
     bool setScreamVolume(const int& screamVolume);

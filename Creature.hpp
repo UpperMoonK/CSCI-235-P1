@@ -16,7 +16,7 @@ enum School{FIRE, ICE, STORM, LIFE, MYTH, DEATH, NONE};
 class Creature {
     public:
     Creature();
-    Creature(const std::string& name, const Category& category = UNKNOWN, const School& school = NONE, const int& health = 1, const int& level = 1, const bool& tame = false);
+    Creature(const std::string& name, const Category& category = UNKNOWN, const School& school = NONE, const int& health = 1, const int& level = 1, const int& speed = 1, const bool& tame = false);
     bool setName(const std::string& name);
     std::string getName() const;
     void setCategory(const Category& category);
@@ -27,6 +27,8 @@ class Creature {
     int getHealth() const;
     bool setLevel(const int& level);
     int getLevel() const;
+    bool setSpeed(const int& speed);
+    int getSpeed() const;
     void setHostility(const bool& isHostile);
     bool isHostile() const;
     virtual void display() const;
@@ -37,6 +39,7 @@ class Creature {
     School school_; //The school that the creature belongs to(enum)
     int health_; //The health of the creature (a non-zero, non-negative integer)
     int level_; //The level of the creature(a non-zero, non-negative integer))
+    int speed_;
     bool isHostile_; //Flag that indicates if the creature is hostile or not (boolean)
 };
 

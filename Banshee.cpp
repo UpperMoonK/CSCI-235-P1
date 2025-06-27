@@ -18,6 +18,7 @@ Banshee::Banshee() {
     setSchool(DEATH);
     setHealth(1);
     setLevel(1);
+    setSpeed(1);
     this->spectralAura_ = RED;
     this->screamVolume_ = 1;
     this->fearInducing_ = 0;
@@ -45,12 +46,13 @@ if not provided, or if the value provided is 0 or negative
 @param: A flag indicating whether the Banshee can induce fear, with
 default value False
 */
-Banshee::Banshee(const std::string& name, const Category& category, const School& school, const int& health, const int& level, const bool& isHostile, const Aura& spectralAura, const int& screamVolume, const bool& fearInducing): Creature(name, category, school, health, level, isHostile) {
+Banshee::Banshee(const std::string& name, const Category& category, const School& school, const int& health, const int& level, const int& speed, const bool& isHostile, const Aura& spectralAura, const int& screamVolume, const bool& fearInducing): Creature(name, category, school, health, level, speed, isHostile) {
     setName(name);
     setCategory(category);
     setSchool(school);
     setHealth(health);
     setLevel(level);
+    setSpeed(speed);
     setHostility(isHostile);
     this->spectralAura_ = spectralAura;
     setScreamVolume(screamVolume);
@@ -145,7 +147,7 @@ void Banshee::display() const{
     } else {
         feartf = "FALSE";
     }
-    std::cout << getName() << "\n" << "Category: " << getCategory() << "\n" << "School: " << getSchool() << "\n" << "Aura Color: " << getAura() << "\n" << "Scream Level: " << getScreamVolume() << "\n" << "Health: " << getHealth() << "\n" << "Level: " << getLevel() << "\n" << "Fear Inducing: " << feartf << "\n" << "Hostile: " << torf << "\n";
+    std::cout << getName() << "\n" << "Category: " << getCategory() << "\n" << "School: " << getSchool() << "\n" << "Aura Color: " << getAura() << "\n" << "Scream Level: " << getScreamVolume() << "\n" << "Health: " << getHealth() << "\n" << "Level: " << getLevel() << "\n" << "Speed: " << getSpeed() << "\n" << "Fear Inducing: " << feartf << "\n" << "Hostile: " << torf << "\n";
 }
 
 /**
