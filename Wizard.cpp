@@ -61,22 +61,22 @@ DEATH: Dark Sprite
 */
 void Wizard::attackSpell(Creature* target){
     target->setHealth(target->getHealth() - 20);
-    if(target->getSchool() == "FIRE"){
+    if(getSchool() == "FIRE"){
         std::cout << getName() << " casts Fire Cat on " << target->getName() << "!" << "\n";
     }
-    if(target->getSchool() == "STORM"){
+    if(getSchool() == "STORM"){
         std::cout << getName() << " casts Thunder Snake on " << target->getName() << "!" << "\n";
     }
-    if(target->getSchool() == "ICE"){
+    if(getSchool() == "ICE"){
         std::cout << getName() << " casts Frost Beetle on " << target->getName() << "!" << "\n";
     }
-    if(target->getSchool() == "LIFE"){
+    if(getSchool() == "LIFE"){
         std::cout << getName() << " casts Imp on " << target->getName() << "!" << "\n";
     }
-    if(target->getSchool() == "MYTH"){
+    if(getSchool() == "MYTH"){
         std::cout << getName() << " casts Blood Bat on " << target->getName() << "!" << "\n";
     }
-    if(target->getSchool() == "DEATH"){
+    if(getSchool() == "DEATH"){
         std::cout << getName() << " casts Dark Sprite on " << target->getName() << "!" << "\n";
     }
 }

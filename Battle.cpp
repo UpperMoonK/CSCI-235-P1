@@ -45,7 +45,9 @@ void Battle::simulate() {
         buildTurnStack();
 
         while(!turnStack_.empty()){
-            executeTurn(turnStack_.top());
+            Creature* attacker = turnStack_.top();
+            turnStack_.pop();
+            executeTurn(attacker);
             removeDefeatedEnemy();
             if(!isWizardAlive() || !enemiesRemain()){
                 break;
@@ -95,6 +97,10 @@ wizard chooses and casts a spell (either offensive or defensive) on a chosen
 target (indexed from your tavern)
 */
 void Battle::executeTurn(Creature* attacker) {
+    if (!attacker || attacker->getHealth() <= 0) {
+        return;
+    }
+
     std::vector<Creature*> attackee = enemies_.toVector();
     if(attackee.empty()) {return;}
     if(attacker == wizard_){
@@ -110,18 +116,15 @@ void Battle::executeTurn(Creature* attacker) {
             if(attacked >= 0 && attacked < attackee.size()){
                 wizard_->attackSpell(attackee[attacked]);
             } else {std::cout << "Please enter a valid index" << "\n"; return;}
-            turnStack_.pop();
         }
 
         if(attack){
             wizard_->healSpell();
-            turnStack_.pop();
         }
     }
 
     else{
         attacker->attack(wizard_);
-        turnStack_.pop();
     }
 }
 
