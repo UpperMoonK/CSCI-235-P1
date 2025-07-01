@@ -3,6 +3,7 @@ Date: (06/10/2025)
 This is the interface for the CatThug class, an inherted class from the Creature one, with getter, setters, data members, etc. */
 
 #include "CatThug.hpp"
+#include "Wizard.hpp"
 /**
 Default constructor.
 Default-initializes all private members.
@@ -19,7 +20,7 @@ CatThug::CatThug(){
     setHealth(1);
     setLevel(1);
     setSpeed(1);
-    this->weapons_ = {};
+    this->weapons_.clear();
     this->noterietyLevel_ = ROOKIE;
     this->isWanted_ = 0;
     setHostility(0);
@@ -192,4 +193,10 @@ void CatThug::display() const{
 */
 bool operator==(const CatThug& catthug1, const CatThug& catthug2){
     return (catthug1.getName() == catthug2.getName() && catthug1.getNotoriety() == catthug2.getNotoriety() && catthug1.isWanted() == catthug2.isWanted());
+}
+
+void CatThug::attack(Wizard* wizard) const{
+    std::cout << "The cat thug swerved bent that corner woaaaooaah, so you better hold on tight" << "\n" << "It sprayed 20 bullets, yet missed every shot" 
+    << "\n" << "Nothing may have happened to you or your cloak, but the cringe overcomes you: Emotional Damage: - 10" << "\n";
+    wizard->setHealth(wizard->getHealth() - 10);
 }

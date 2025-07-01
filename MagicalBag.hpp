@@ -16,6 +16,7 @@ public:
     bool remove(const T& anEntry);
     void clear();
     bool contains(const T& target);
+    std::vector<T> toVector() const;
 protected:
     static const int DEFAULT_CAPACITY = 100;
     T items_[DEFAULT_CAPACITY];

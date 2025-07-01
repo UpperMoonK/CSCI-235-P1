@@ -9,6 +9,7 @@ Note: This is the documentation (inferface) for the Creature class, with member 
 #include <iostream>
 #include <string>
 
+class Wizard;
 
 enum Category{MAGICAL, UNDEAD, ANIMAL, HUMANOID, UNKNOWN};
 enum School{FIRE, ICE, STORM, LIFE, MYTH, DEATH, NONE};
@@ -32,6 +33,7 @@ class Creature {
     void setHostility(const bool& isHostile);
     bool isHostile() const;
     virtual void display() const;
+    virtual void attack(Wizard* wizard) const;
 
     private:
     std::string name_; //The name of the creature(string)

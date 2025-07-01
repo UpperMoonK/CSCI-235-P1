@@ -3,6 +3,7 @@ Date: (06/10/2025)
 This is the implentation for the Firecat class, an inherted class from the Creature one, with getter, setters, data members, etc. */
 
 #include "Firecat.hpp"
+#include "Wizard.hpp"
 
 /**
 Default constructor.
@@ -155,4 +156,10 @@ void Firecat::display() const{
 */
 bool operator==(const Firecat& firecat1, const Firecat& firecat2){
     return (firecat1.getName() == firecat2.getName() && firecat1.getFlameColor() == firecat2.getFlameColor() && firecat1.isArsonist() == firecat2.isArsonist());
+}
+
+void Firecat::attack(Wizard* wizard) const{
+    std::cout << "The FireCat releases a torrent of flames burning hotter than a SuperNova... " << "\n" << "It burns a hole cloak on your favorite cloak..." 
+    << "\n" << "Emotional Damage - 10" << "\n";
+    wizard->setHealth(wizard->getHealth() - 10);
 }

@@ -83,7 +83,17 @@ bool MagicalBag<T>::contains(const T& target) {
     return 0;
 }
 
-
+/**
+@return: Helper to put the full MagicalBag contents in a readable array form
+*/
+template<class T>
+std::vector<T> MagicalBag<T>::toVector() const{
+    std::vector<T> battlers_;
+    for(int i = 0; i < item_count_; i++){
+        battlers_.push_back(items_[i]);
+    }
+    return battlers_;
+}
 
 
 

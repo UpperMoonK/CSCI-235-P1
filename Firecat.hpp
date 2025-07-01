@@ -10,7 +10,7 @@ class Firecat: public Creature {
 public:
     enum FlameColor{RED, ORANGE, BLUE, WHITE};
     Firecat();
-    Firecat(const std::string& name, const Category& category = ANIMAL, const School& school = FIRE, const int& health = 1, const int& level = 1, const int& speed, const bool& isHostile = 0, const FlameColor& flameColor = ORANGE, const int& flameIntensity = 1, const bool& arsonist = 0);
+    Firecat(const std::string& name, const Category& category = ANIMAL, const School& school = FIRE, const int& health = 1, const int& level = 1, const int& speed = 1, const bool& isHostile = 0, const FlameColor& flameColor = ORANGE, const int& flameIntensity = 1, const bool& arsonist = 0);
     void setFlameColor(const FlameColor& flameColor);
     std::string getFlameColor() const;
     bool setFlameIntensity(const int& flameIntensity);
@@ -19,6 +19,7 @@ public:
     bool isArsonist() const;
     void display() const override;
     friend bool operator==(const Firecat& firecat1, const Firecat& firecat2);
+    void attack(Wizard* wizard) const override;
 
 private:
     FlameColor flameColor_;

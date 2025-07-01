@@ -18,7 +18,7 @@ public:
     };
     enum Notoriety{ROOKIE, THIEF, ENFORCER, MOB_BOSS};
     CatThug();
-    CatThug(const std::string& name, const Category& category = HUMANOID, const School& school = MYTH, const int& health = 1, const int& level = 1, const int& speed = 1, const bool& isHostile = 0, const std::vector<Weapon>& weapons = {}, const Notoriety& noterietyLevel = ROOKIE, const bool& isWanted = 0);
+    CatThug(const std::string& name, const Category& category = HUMANOID, const School& school = MYTH, const int& health = 1, const int& level = 1, const int& speed = 1, const bool& isHostile = 0, const std::vector<Weapon>& weapons = std::vector<Weapon>(), const Notoriety& noterietyLevel = ROOKIE, const bool& isWanted = 0);
     void setWeapons(const std::vector<Weapon>& weapons);
     std::vector<Weapon> getWeapons() const;
     bool addWeapon(const Weapon& weapon);
@@ -29,6 +29,7 @@ public:
     bool isWanted() const;
     void display() const override;
     friend bool operator==(const CatThug& catThug1, const CatThug& catThug2);
+    void attack(Wizard* wizard) const override;
 
 private:
     std::vector<Weapon> weapons_;

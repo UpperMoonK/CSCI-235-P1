@@ -3,6 +3,7 @@ Date: (06/10/2025)
 This is the interface for the Banshee class, an inherted class from the Creature one, with getter, setters, data members, etc. */
 
 #include "Banshee.hpp"
+#include "Wizard.hpp"
 
 /**
 Default constructor.
@@ -156,4 +157,10 @@ void Banshee::display() const{
 */
 bool operator==(const Banshee& banshee1, const Banshee& banshee2){
     return (banshee1.getName() == banshee2.getName() && banshee1.getAura() == banshee2.getAura() && banshee1.isFearInducing() == banshee2.isFearInducing());
+}
+
+void Banshee::attack(Wizard* wizard) const{
+    std::cout << "The Banshee releases scream so loud it broke all nearby glass in an 100 meter radius " << "\n" << "Tiny glass fragments tear multiple small holes on your favorite cloak, but now every time the Banshee takes a step, it will get glass pieces in its foot" 
+    << "\n" << "Stupid Banshee..." << "\n" << "Emotional Damage - 10" << "\n";
+    wizard->setHealth(wizard->getHealth() - 10);
 }

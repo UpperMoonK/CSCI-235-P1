@@ -20,6 +20,7 @@ public:
     bool isFearInducing() const;
     void display() const override;
     friend bool operator==(const Banshee& banshee1, const Banshee& banshee2);
+    void attack(Wizard* wizard) const override;
 
 private:
     Aura spectralAura_;

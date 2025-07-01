@@ -5,6 +5,7 @@ Note: This is the implementation for the Creature class.
 */
 
 #include "Creature.hpp"
+#include "Wizard.hpp"
 
 /**
 Default constructor.
@@ -45,8 +46,10 @@ Creature::Creature(const std::string& name, const Category& category, const Scho
     this->name_ = name;
     this->category_ = category;
     this->school_ = school;
-    if (health > 0){
-       this->health_ = health; 
+    if (health <= 0){
+       this->health_ = 1; 
+    } else{
+        this->health_ = health;
     }
     if (level > 0) {
         this->level_ = level;
@@ -148,6 +151,7 @@ std::string Creature::getSchool() const{
 
 bool Creature::setHealth(const int& health){
     if(health <= 0){
+        this->health_ = 0;
         return 0;
     }else{
         this->health_ = health;
@@ -245,4 +249,9 @@ void Creature::display() const{
         torf = "FALSE";
     }
     std::cout << getName() << "\n" << "Category: " << getCategory() << "\n" << "School: " << getSchool() << "\n" << "Health: " << getHealth() << "\n" << "Level: " << getLevel() << "\n" << "Speed: " << getSpeed() << "\n" << "Hostile: " << torf << "\n";
+}
+
+void Creature::attack(Wizard* wizard) const{
+    std::cout << "The Creature does something weird that gets on your nerves for the rest of the day" << "\n";
+    wizard->setHealth(wizard->getHealth() - 10);
 }
