@@ -21,7 +21,6 @@ public:
     bool isWizardAlive() const;
     bool enemiesRemain() const;
     void displayRoundStatus() const;
-    static bool compareSpeed(Creature* a, Creature* b);
 private:
     Wizard* wizard_;
     Tavern enemies_;

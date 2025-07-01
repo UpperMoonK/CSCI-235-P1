@@ -5,6 +5,12 @@ Note: This is the implementation for the Battle class, with constructors complet
 */
 
 #include "Battle.hpp"
+/**
+@post: Helper function to compare speeds within the array
+*/
+bool compareSpeed(Creature* a, Creature* b){
+    return a->getSpeed() > b->getSpeed();
+}
 
 /**
 Parameterized constructor
@@ -80,13 +86,6 @@ void Battle::buildTurnStack() {
     for(int i = fighters_.size() - 1; i >= 0; i--){
         turnStack_.push(fighters_[i]);
     }
-}
-
-/**
-@post: Helper function to compare speeds within the array
-*/
-bool Battle::compareSpeed(Creature* a, Creature* b){
-    return a->getSpeed() < b->getSpeed();
 }
 
 /**
